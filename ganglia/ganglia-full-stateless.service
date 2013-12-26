@@ -1,0 +1,11 @@
+[Unit]
+Description=full ganglia service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run -rm -name ganglia -h mobster -v /etc/ganglia:/etc/ganglia -v /var/lib/ganglia:/var/lib/ganglia -p 0.0.0.0:80:80 wookietreiber/ganglia
+ExecStop=/usr/bin/docker kill ganglia
+
+[Install]
+WantedBy=multi-user.target
