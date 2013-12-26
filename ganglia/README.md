@@ -10,12 +10,14 @@ Add your configuration:
 
     docker run -v /path/to/conf:/etc/ganglia -p 0.0.0.0:80:80 wookietreiber/ganglia
 
-I usually run it like this:
+I usually run it like this, the stateless way:
 
-    docker run -d \
+    docker run -rm \
       -name ganglia \
       -h my.fqdn.org \
       -v /path/to/conf:/etc/ganglia \
       -v /path/to/ganglia:/var/lib/ganglia \
       -p 0.0.0.0:80:80 \
       wookietreiber/ganglia
+
+There is also a systemd unit file demonstrating this in this directory.
