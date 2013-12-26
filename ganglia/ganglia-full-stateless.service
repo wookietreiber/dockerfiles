@@ -1,5 +1,5 @@
 [Unit]
-Description=full ganglia service
+Description=full and stateless ganglia docker instance
 After=docker.service
 
 [Service]
