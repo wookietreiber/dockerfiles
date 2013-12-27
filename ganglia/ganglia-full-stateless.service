@@ -1,10 +1,12 @@
 [Unit]
 Description=full and stateless ganglia docker instance
+Requires=docker.service
 After=docker.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run -rm -name ganglia -h %H -v /etc/ganglia:/etc/ganglia -v /var/lib/ganglia:/var/lib/ganglia -p 0.0.0.0:80:80 wookietreiber/ganglia
+RestartSec=5
+ExecStart=/usr/bin/docker run -rm -name ganglia -h %H -v /etc/ganglia:/etc/ganglia -v /var/lib/ganglia:/var/lib/ganglia -p 0.0.0.0:80:80 wookietreiber/ganglia --with-gmond --timezone Continent/City
 ExecStop=/usr/bin/docker kill ganglia
 
 [Install]

@@ -19,5 +19,6 @@ I usually run it like this, the stateless way:
       -v /path/to/ganglia:/var/lib/ganglia \
       -p 0.0.0.0:80:80 \
       wookietreiber/ganglia
+      --timezone Continent/City
 
 There is also a systemd unit file demonstrating this in this directory.
