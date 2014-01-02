@@ -21,4 +21,4 @@ I usually run it like this, the stateless way:
       wookietreiber/ganglia
       --timezone Continent/City
 
-There is also a systemd unit file demonstrating this in this directory.
+There are also systemd unit and SysV init files demonstrating this in this directory.

@@ -1,0 +1,119 @@
+#!/bin/sh
+#
+#       /etc/rc.d/init.d/ganglia
+#
+#       Daemon for ganglia
+#
+# chkconfig:   2345 96 96
+# description: Daemon for ganglia
+
+### BEGIN INIT INFO
+# Provides:       ganglia
+# Required-Start: docker
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop:  0 1 6
+# Short-Description: start and stop ganglia
+# Description: Daemon for ganglia
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+exec="/usr/bin/docker"
+prog="ganglia"
+lockfile="/var/lock/subsys/$prog"
+logfile="/var/log/$prog"
+
+[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+
+prestart() {
+    $exec rm $prog
+}
+
+start() {
+    [ -x $exec ] || exit 5
+
+    prestart
+    printf "Starting $prog:\t"
+    echo "\n$(date)\n" >> $logfile
+
+    $exec run -rm \
+      -name ganglia \
+      -v /etc/ganglia:/etc/ganglia \
+      -v /var/lib/ganglia:/var/lib/ganglia \
+      -p 0.0.0.0:80:80 \
+        wookietreiber/ganglia \
+          --with-gmond \
+          --timezone Continent/City \
+      &>> $logfile &
+
+    touch $lockfile
+    success
+    echo
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    $exec kill ganglia
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    restart
+}
+
+force_reload() {
+    restart
+}
+
+rh_status() {
+    $exec top ganglia
+}
+
+rh_status_q() {
+    $exec top ganglia > /dev/null 2>&1
+}
+
+case "$1" in
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    reload)
+        rh_status_q || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        exit 2
+esac
+
+exit $?
