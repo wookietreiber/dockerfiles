@@ -1,4 +1,4 @@
-FROM backjlack/centos-6.4-x86_64
+FROM centos:centos6
 
 MAINTAINER wookietreiber
 
@@ -7,7 +7,7 @@ RUN yum upgrade -y && \
     yum install -y \
       gcc-c++ automake make \
       apr-devel expat-devel rrdtool-devel zlib-devel \
-      httpd php rsync && \
+      httpd php rsync wget tar && \
     yum clean all
 
 # pcre dependency
