@@ -71,7 +71,7 @@ chown -R nobody:nobody /var/lib/ganglia/rrds
 
 service httpd start
 
-[[ -n $WITH_GMOND ]] && gmond -p /var/run/gmond.pid
+[[ -n $WITH_GMOND ]] && gmond
 
 # last command must stay in foreground, this is the main reason for -d 1
-gmetad -d 1 -p /var/run/gmetad.pid
+gmetad -d 1
