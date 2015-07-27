@@ -12,7 +12,7 @@ RUN yum upgrade -y && \
 
 # pcre dependency
 RUN cd /usr/src && \
-    wget -q ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.33.tar.gz && \
+    wget -q http://sourceforge.net/projects/pcre/files/pcre/8.33/pcre-8.33.tar.gz/download -O pcre-8.33.tar.gz && \
     tar xzf pcre-8.33.tar.gz && \
     cd pcre-8.33 && \
     ./configure --prefix=/usr && \
